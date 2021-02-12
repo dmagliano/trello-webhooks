@@ -1,20 +1,22 @@
 package br.com.mobicare.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.ListIterator;
+import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "action")
 public class Action extends PanacheEntityBase {
 
     @Id
     @Column(name = "id")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "action_id")
+    private String actionId;
 
     @Column(name = "type")
     private String type;

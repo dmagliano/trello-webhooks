@@ -13,7 +13,10 @@ public class Member extends PanacheEntityBase {
 
     @Id
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "member_id")
+    private String memberId;
 
     @Column(name = "full_name")
     private String fullname;
