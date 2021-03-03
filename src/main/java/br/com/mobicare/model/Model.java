@@ -13,7 +13,7 @@ public class Model extends PanacheEntityBase {
 
     @Id
     @Column(name = "id")
-    private String model_id;
+    private String modelId;
 
     @Column(name = "name")
     private String name;

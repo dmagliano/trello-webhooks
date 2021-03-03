@@ -19,7 +19,7 @@ public class Member extends PanacheEntityBase {
     private String memberId;
 
     @Column(name = "full_name")
-    private String fullname;
+    private String fullName;
 
     @Column(name = "username")
     private String username;
