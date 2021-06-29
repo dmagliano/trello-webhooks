@@ -28,7 +28,6 @@ public class Member extends PanacheEntityBase {
 
     public static Optional<Member> findByMemberId(String memberId) {
         return find("member_id", memberId).firstResultOptional();
-        //return find("key = :key", Parameters.with("key", key)).firstResultOptional();
     }
 
 }
