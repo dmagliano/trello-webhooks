@@ -11,5 +11,6 @@ public class CardDTO {
 
     private String name;
 
+    private String shortLink;
 
 }

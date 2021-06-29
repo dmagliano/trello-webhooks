@@ -11,9 +11,9 @@ public class DataDTO {
 
     private BoardDTO board;
 
-    private Map<String, Object> listBefore;
+    private Map<String, String> listBefore;
 
-    private Map<String, Object> listAfter;
+    private Map<String, String> listAfter;
 
 
 }

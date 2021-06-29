@@ -9,9 +9,7 @@ public class ModelDTO {
 
     private String name;
 
-    private String url;
-
-    private String idOrganization;
+    private String shortUrl;
 
 }
 
