@@ -1,9 +1,6 @@
 package br.com.mobicare.rest;
 
-import br.com.mobicare.dto.BoardDTO;
-import br.com.mobicare.dto.CardDTO;
-import br.com.mobicare.dto.MemberDTO;
-import br.com.mobicare.dto.WebhookDTO;
+import br.com.mobicare.dto.*;
 import br.com.mobicare.utils.ClientObjectMapper;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -21,12 +18,6 @@ import java.util.Optional;
 public interface TrelloService {
 
     @GET
-    @Path("/cards/{id}")
-    Optional<CardDTO> getCardById(@PathParam("id") String cardId,
-                                  @QueryParam("key") String key,
-                                  @QueryParam("token") String token);
-
-    @GET
     @Path("/boards/{shortURL}")
     Optional<BoardDTO> getBoardByShortURL(@PathParam("shortURL") String shortURL,
                                           @QueryParam("key") String key,
@@ -37,6 +28,18 @@ public interface TrelloService {
     List<MemberDTO> getBoardMembers(@PathParam("boardId") String boardId,
                                     @QueryParam("key") String key,
                                     @QueryParam("token") String token);
+
+    @GET
+    @Path("/boards/{boardId}/labels")
+    List<LabelDTO> getBoardLabels(@PathParam("boardId") String cardId,
+                                   @QueryParam("key") String key,
+                                   @QueryParam("token") String token);
+
+    @GET
+    @Path("/cards/{cardId}/labels")
+    Optional<CardDTO> getCardById(@PathParam("cardId") String cardId,
+                                  @QueryParam("key") String key,
+                                  @QueryParam("token") String token);
 
     @POST
     @Path("/webhooks/")

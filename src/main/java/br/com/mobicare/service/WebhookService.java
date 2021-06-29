@@ -1,6 +1,7 @@
 package br.com.mobicare.service;
 
 import br.com.mobicare.dto.*;
+import br.com.mobicare.model.Label;
 import br.com.mobicare.model.Score;
 import br.com.mobicare.model.Webhook;
 import br.com.mobicare.rest.TrelloService;
@@ -9,6 +10,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,7 +37,7 @@ public class WebhookService {
 
     public void receive(TrelloDTO trelloDTO) {
 
-            if (trelloDTO.getAction().getDisplay().getTranslationKey().equalsIgnoreCase("action_move_card_from_list_to_list")){
+        if (trelloDTO.getAction().getDisplay().getTranslationKey().equalsIgnoreCase("action_move_card_from_list_to_list")) {
             Score score = new Score(trelloDTO);
             score.persistAndFlush();
         }
@@ -68,6 +70,8 @@ public class WebhookService {
                 webhook.persist();
 
                 memberService.createMemberFromBoard(board.get().getId());
+                createBoardLabels(board.get().getId());
+
 
                 return Response.status(Response.Status.CREATED).entity(createdWebhook).build();
             } else {
@@ -94,14 +98,31 @@ public class WebhookService {
         }
     }
 
+    @Transactional
+    public void createBoardLabels(String boardId) {
+        List<LabelDTO> labels = trelloService.getBoardLabels(boardId,
+                parametersService.getParameterAsString("apikey"),
+                parametersService.getParameterAsString("apitoken"));
+
+        if (labels.size() > 0) {
+            for (LabelDTO label : labels) {
+                Optional<Label> optional = Label.findByLabelId(label.getId());
+                if (optional.isEmpty()) {
+                    Label l = label.toEntity();
+                    l.persistAndFlush();
+                }
+            }
+        }
+
+    }
+
     public Response getCard(String cardId) {
         Optional<CardDTO> card = trelloService.getCardById(cardId,
                 parametersService.getParameterAsString("apikey"),
                 parametersService.getParameterAsString("apitoken"));
-        if (card.isPresent()){
+        if (card.isPresent()) {
             return Response.status(Response.Status.OK).entity(card.get()).build();
-        }
-        else return Response.status(Response.Status.NOT_FOUND).build();
+        } else return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     //endpoint somente para testes e alteração do callbackurl do pipedream/ngrok, só para testes.
@@ -131,6 +152,7 @@ public class WebhookService {
         String[] parts = url.getPath().split("/");
         return parts[2];
     }
+
 }
 
 
