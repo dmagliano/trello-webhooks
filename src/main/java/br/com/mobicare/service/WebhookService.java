@@ -64,7 +64,7 @@ public class WebhookService {
                     board.get().getId(),
                     webHookCreateForm.getDescription());
 
-            if (newWebhook.getStatus() == Response.Status.CREATED.getStatusCode()) {
+            if (newWebhook.getStatus() == Response.Status.OK.getStatusCode()) {
                 WebhookDTO createdWebhook = newWebhook.readEntity(WebhookDTO.class);
                 Webhook webhook = new Webhook(createdWebhook, board.get().getName());
                 webhook.persist();
@@ -123,6 +123,12 @@ public class WebhookService {
         if (card.isPresent()) {
             return Response.status(Response.Status.OK).entity(card.get()).build();
         } else return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    public Response getCardCreateDate(String cardId) {
+        CardDTO card = new CardDTO();
+        String date = card.getCardCreationDate(cardId);
+        return Response.status(Response.Status.OK).entity(date).build();
     }
 
     //endpoint somente para testes e alteração do callbackurl do pipedream/ngrok, só para testes.

@@ -44,7 +44,7 @@ public class WebhookResource {
     }
 
     //TODO ajustar o persist para facilitar o controle de webhooks existentes
-    @Path("/webhooks/create")
+    @Path("/webhooks")
     @POST
     @Transactional
     @APIResponse(responseCode = "201", description = "Webhook criado com sucesso")
@@ -57,7 +57,7 @@ public class WebhookResource {
 
     //endpoint somente para testes e alteração do callbackurl do pipedream/ngrok, só para testes.
     @PUT
-    @Path("/webhooks/update/{id}")
+    @Path("/webhooks/{id}")
     @Transactional
     public Response updateWebhook(@PathParam("id") Long id, WebhookCreateForm dto){
         return webhookService.updateWebhook(id, dto);
@@ -75,5 +75,11 @@ public class WebhookResource {
     @Path("/webhooks/card/{id}")
     public Response getCard(@PathParam("id") String id)  {
         return webhookService.getCard(id);
+    }
+
+    @GET
+    @Path("/webhooks/card/date/{id}")
+    public Response getCardDate(@PathParam("id") String id)  {
+        return webhookService.getCardCreateDate(id);
     }
 }
